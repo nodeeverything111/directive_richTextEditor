@@ -1,0 +1,50 @@
+<div style="width:400px;height:300px">
+<input type="button" id="button1" onclick="file.click()" value="upfile"/>
+<input type="button" id="button2" onclick="execommand(command['bold'])" value="bold"/>
+<input type="button" id="button3" onclick="execommand(command['left'])" value="left"/>
+<input type="button" id="button4" onclick="execommand(command['right'])" value="right"/>
+<input type="button" id="button5" onclick="execommand(command['underline'])" value="underline"/>
+<input type="file" id="file" style="display:none" onchange="readAsDataURL()"/>
+
+<iframe src="" name="editor" id="editor" style="display:block;border: 1px solid rgb(204, 204, 204);" frameborder="0" height="200" width="400"></iframe>
+</div>
+<script type="text/javascript">
+//debugger;
+var command={'left':'justifyLeft','bold':'bold','underline':'underline','right':'justifyRight'};
+
+var _win=document.getElementById('editor').contentWindow;
+_win.document.designMode='On';
+
+
+function insertHTML( sHtml )
+{
+           _win.focus(); 
+           _win.document.execCommand( 'InsertHtml' , '' , sHtml );
+           
+           
+}
+
+function readAsDataURL(){  
+    //检验是否为图像文件  
+	debugger;
+    var file = document.getElementById("file").files[0];  
+    if(!/image\/\w+/.test(file.type)){  
+        alert("看清楚，这个需要图片！");  
+        return false;  
+    }  
+    var reader = new FileReader();  
+    //将文件以Data URL形式读入页面  
+    reader.readAsDataURL(file);  
+    reader.onload=function(e){  
+        var result=document.getElementById("result");  
+        //显示文件  
+        insertHTML('<img src="' + this.result +'" style='+'"width:100px;height:80px" alt="" />');  
+    }  
+}  
+
+function execommand(args){
+debugger;
+	_win.document.execCommand( args , false , null );
+}
+</script>
+
